@@ -14,6 +14,9 @@ RUN apt-get update && \
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+RUN cd /usr/local/etc/php/conf.d/ && \
+  echo 'memory_limit = -1' >> /usr/local/etc/php/conf.d/docker-php-ram-limit.ini
+
 WORKDIR /var/www
 
 CMD composer i -o ; wait-for-it db:5432 -- bin/console doctrine:migrations:migrate ;  php-fpm
